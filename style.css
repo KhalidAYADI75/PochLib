@@ -1,0 +1,18 @@
+body {
+  background: white;
+}
+.title{
+ background: #F0F0F0;
+ color:grey;
+ border-bottom: 2px solid grey;
+}
+#myBooks {
+text-align: center;
+}
+#addbt {
+background-color:green;
+height:40px;
+width:120px;
+color:white;
+font-weight:bold
+}
