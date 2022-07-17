@@ -38,14 +38,11 @@ bouton_search.addEventListener('click',function(event) {
 });
 
 function afficheResultatDansTableau(value) {
-    console.log (value);
-    console.log (Object.values(value)[1]);
     document.getElementById("tabResult").innerHTML="";
     if ((Object.values(value)[1])==0) {
       document.getElementById("tabResult").innerHTML="</br>Aucun livre n'a été trouvé</br></br></br>";
     } else {
       let nbVolume=Object.values(value)[2].length;
-      console.log(nbVolume);
       const tbl = document.createElement("table");
       tbl.width = '100%';
       const tblBody = document.createElement("tbody");
@@ -55,7 +52,7 @@ function afficheResultatDansTableau(value) {
           for (let j = 0; j < 2; j++) {
              const cell = document.createElement("td");
              cell.style.verticalAlign = "top";
-             ajoutBookmark(cell);
+             ajoutBookmark(cell,i,j);
              ajoutIntitule('Titre',cell,value,i,j);
              ajoutIntitule('Id',cell,value,i,j);
              ajoutIntitule('Auteur',cell,value,i,j);
@@ -70,7 +67,6 @@ function afficheResultatDansTableau(value) {
       document.getElementById("tabResult").appendChild(tbl);
       tbl.setAttribute("border", "2");
     }
-
 }
 
 function effaceDonneesSaisies() {
@@ -78,38 +74,47 @@ function effaceDonneesSaisies() {
     document.getElementById("auteur").value="";
 }
 
-function ajoutBookmark(cell) {
+function ajoutBookmark(cell,i,j) {
     var span = document.createElement("span");
     span.setAttribute('class', 'fa fa-bookmark fa-2x');
+    span.setAttribute('id', i+'-'+j);
     span.setAttribute("style", "color:green;float:right;margin:10px");
     cell.appendChild(span);
+
+    span.addEventListener('mouseover',function() {
+       document.getElementById(i+'-'+j).style.cursor = "pointer";
+    });
+
+    span.addEventListener('click',function() {
+        RecupInfoLivre(i+'-'+j);
+    });
 }
 
 function ajoutIntitule(intitule,cell,value,i,j) {
     var div = document.createElement("div");
     switch (intitule) {
         case 'Titre' :
+            div.setAttribute('id','titre_'+i+'-'+j);
             div.innerHTML = "</br>"+ "Titre : " + Object.values(value)[2][i+j]['volumeInfo']['title']+"</br></br>";
             div.style.fontWeight = 'bold';
-            console.log("titre: "+Object.values(value)[2][i+j]['volumeInfo']['title']);
             break;
         case 'Id' :
+            div.setAttribute('id','id_'+i+'-'+j);
             div.innerHTML = "Id : " + Object.values(value)[2][i+j]['id']+"</br></br>";
             div.style.fontStyle = "italic";
-            console.log("id: "+Object.values(value)[2][i+j]['id']);
             break;
         case 'Auteur' :
+            div.setAttribute('id','auteur_'+i+'-'+j);
             div.innerHTML = "Auteur : " + Object.values(value)[2][i+j]['volumeInfo']['authors'][0]+"</br></br>";
-            console.log("auteur: "+Object.values(value)[2][i+j]['volumeInfo']['authors'][0]);
             break;
         case 'Description' :
-        if (Object.values(value)[2][i+j]['volumeInfo']['description']) {
-               div.innerHTML = "Description : " + Object.values(value)[2][i+j]['volumeInfo']['description']+"</br></br>";
-            } else {
-               div.innerHTML = "Description : Information manquante "+"</br></br>";
-            }
-            console.log("description: "+Object.values(value)[2][i+j]['volumeInfo']['description']);
-            div.innerHTML = div.innerHTML.substr(0,200);
+            div.setAttribute('id','description_'+i+'-'+j);
+            if (Object.values(value)[2][i+j]['volumeInfo']['description']) {
+                   div.innerHTML = "Description : " + Object.values(value)[2][i+j]['volumeInfo']['description']+"</br></br>";
+                } else {
+                   div.innerHTML = "Description : Information manquante "+"</br></br>";
+                }
+                div.innerHTML = div.innerHTML.substr(0,200);
     }
     div.style.margin = '10px';
     cell.appendChild(div);
@@ -124,4 +129,55 @@ function ajoutImage(cell,value,i,j) {
     }
     img.setAttribute("style", "height:200px;margin:10px");
     cell.appendChild(img);
+}
+
+function RecupInfoLivre(indice) {
+if (document.getElementById('MaPochList').innerHTML === "") {
+    const tbl = document.createElement("table");
+    tbl.width = '100%';
+    const tblBody = document.createElement("tbody");
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.style.verticalAlign = "top";
+    var div = document.createElement("div");
+    div.setAttribute('id','favori_titre_'+indice);
+    div.innerHTML ="</br>"+ document.getElementById('titre_'+indice).textContent+"</br></br>";
+    div.style.fontWeight = 'bold';
+    div.style.margin = '10px';
+    cell.appendChild(div);
+
+    var div = document.createElement("div");
+    div.setAttribute('id','favori_id_'+indice);
+    div.innerHTML =document.getElementById('id_'+indice).textContent+"</br></br>";
+     div.style.fontStyle = "italic";
+    div.style.margin = '10px';
+    cell.appendChild(div);
+
+    var div = document.createElement("div");
+    div.setAttribute('id','favori_auteur_'+indice);
+    div.innerHTML =document.getElementById('auteur_'+indice).textContent+"</br></br>";
+    div.style.margin = '10px';
+    cell.appendChild(div);
+
+     var div = document.createElement("div");
+     div.setAttribute('id','favori_description_'+indice);
+     div.innerHTML =document.getElementById('description_'+indice).textContent+"</br></br>";
+     div.style.margin = '10px';
+     cell.appendChild(div);
+
+    row.appendChild(cell);
+    tblBody.appendChild(row);
+    tbl.appendChild(tblBody);
+    document.getElementById("MaPochList").appendChild(tbl);
+    tbl.setAttribute("border", "2");
+} else {
+
+
+}
+
+
+
+
+
+
 }

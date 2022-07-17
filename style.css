@@ -39,3 +39,7 @@ input {
   box-sizing: border-box;
    width: 100%;
 }
+
+#MaPochList {
+text-align: left;
+}
