@@ -79,10 +79,10 @@ function effaceDonneesSaisies() {
 }
 
 function ajoutBookmark(cell) {
-    var img = document.createElement("img");
-    img.setAttribute('src', 'bookmark.png');
-    img.setAttribute("style", "height:50px;float:right;margin:10px");
-    cell.appendChild(img);
+    var span = document.createElement("span");
+    span.setAttribute('class', 'fa fa-bookmark fa-2x');
+    span.setAttribute("style", "color:green;float:right;margin:10px");
+    cell.appendChild(span);
 }
 
 function ajoutIntitule(intitule,cell,value,i,j) {
