@@ -10,11 +10,30 @@
 		<div id="myBooks">
 			<h1 class="title">Poch'Lib</h1>
 			<h2 class="h2">Nouveau Livre</h2>
-			<button id='addbt' type="button">Ajouter un livre</button>
+			<button id='bt_add' type="button">Ajouter un livre</button><br><br>
+			<div id="divformsearch">
+				<form id="formsearch" action="">
+					<label for="titre_livre">Titre du livre</label><br><br>
+					<input type="text" id="titre_livre" name="titre_livre"><br><br>
+					<label for="auteur">Auteur</label><br><br>
+					<input type="text" id="auteur" name="auteur"><br><br>
+					<button id='bt_search' type="submit" value="Rechercher">Rechercher</button><br><br>
+					<button id='bt_cancel' type="button">Annuler</button>
+				</form><br><br>
+				<div id="resultSearch">
+					<h2>Résultats de recherche</h2>
+					<div id="tabResult">
+
+					</div>
+				</div>
+			</div>
 			<hr>
+
 			<div id="content">
 				<h2>Ma poch'liste</h2>
 			</div>
 		</div>
+		<script src="./index.js"></script>
+
   	</body>
 </html>

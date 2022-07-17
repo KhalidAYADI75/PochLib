@@ -9,10 +9,33 @@ body {
 #myBooks {
 text-align: center;
 }
-#addbt {
+
+#resultSearch {
+border-top: 2px solid grey;
+text-align: center;
+}
+
+button {
 background-color:green;
 height:40px;
 width:120px;
 color:white;
-font-weight:bold
+font-weight:bold;
+}
+
+#bt_cancel {
+background-color:red;
+}
+
+#divformsearch  {
+text-align:left;
+}
+
+#tabResult {
+text-align:left;
+}
+
+input {
+  box-sizing: border-box;
+   width: 100%;
 }
