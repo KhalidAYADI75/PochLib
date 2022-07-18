@@ -17,9 +17,10 @@ bouton_addbook.addEventListener('click',function() {
 // Déclencheur clique sur le bouton rechercher
 bouton_search.addEventListener('click',function(event) {
     event.preventDefault();
-    if ((document.getElementById("titre_livre").value == "") || (document.getElementById("auteur").value == "")) {
+    if ((document.getElementById("titre_livre").value == "") || (document.getElementById("auteur").value == ""))
+    {
         alert ("Vous devez saisir le titre et l'auteur du livre");
-    } else {
+    } else  {
         const tlivre=document.getElementById("titre_livre").value;
         const auteur=document.getElementById("auteur").value;
         fetch("https://www.googleapis.com/books/v1/volumes?q="+tlivre+"inauthor:"+auteur+"&key=AIzaSyB9_kmuvdfj1aK_QY8c3JwHzDAYcsWd0HU")
@@ -29,6 +30,7 @@ bouton_search.addEventListener('click',function(event) {
         }
         })
         .then(function(value) {
+        console.log(value);
         afficheResultatDansTableau(value);
         effaceDonneesSaisies();
         })
@@ -43,6 +45,8 @@ bouton_search.addEventListener('click',function(event) {
 function afficheResultatDansTableau(value) {
 
     console.log(Object.values(value));
+    let livre=new Livre(value.items[0]);
+    console.log(livre.titre);
     document.getElementById("tabResult").innerHTML="";
     if ((Object.values(value)[1])==0) {
         document.getElementById("tabResult").innerHTML="</br>Aucun livre n'a été trouvé</br></br></br>";
@@ -104,7 +108,7 @@ function ajoutIntitule(intitule,cell,value,cpt) {
     div.setAttribute('id',intitule+'_'+cpt);
     switch (intitule) {
         case 'Titre' :
-            div.innerHTML = "</br>"+ "Titre : " + Object.values(value)[2][cpt]['volumeInfo']['title']+"</br></br>";
+            div.innerHTML = "</br>"+ "Titre : " + value.items[cpt]['volumeInfo']['title']+"</br></br>";
             div.style.fontWeight = 'bold';
             break;
         case 'Id' :
