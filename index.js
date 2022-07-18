@@ -169,12 +169,12 @@ function creationTableauEtInsertionPremierLivre(indice) {
     const cell = document.createElement("td");
     cell.style.width='50%';
     cell.style.verticalAlign = "top";
-    InsertionTrash(cell,indice);
-    InsertionTitre(cell,indice);
-    InsertionId(cell,indice);
-    InsertionAuteur(cell,indice);
-    InsertionDescription(cell,indice);
-    InsertionImage(cell,indice);
+    insertionTrash(cell,indice);
+    insertionIntituleLivre('Titre',cell,indice);
+    insertionIntituleLivre('Id',cell,indice);
+    insertionIntituleLivre('Auteur',cell,indice);
+    insertionIntituleLivre('Description',cell,indice);
+    insertionImage(cell,indice);
     row.appendChild(cell);
     const cell1 = document.createElement("td");
     cell1.style.width='50%';
@@ -186,46 +186,33 @@ function creationTableauEtInsertionPremierLivre(indice) {
 }
 
 
-//---------- RECUPERATION  DU LIVRE , ID , AUTEUR , DESCRIPTION et IMAGE DANS LE TABLEAU MA POCHLIST------------
+//---------- INSERTION DU TITRE , ID , AUTEUR , DESCRIPTION et IMAGE DANS LE TABLEAU MA POCHLIST------------
 
-function InsertionTrash(cell,indice) {
+function insertionIntituleLivre (intitule,cell,indice) {
+    var div = document.createElement("div");
+    div.setAttribute('id',intitule+'_'+indice);
+    div.setAttribute('id','favori_'+intitule+'_'+indice);
+    div.innerHTML ="</br>"+ document.getElementById(intitule+'_'+indice).textContent+"</br>";
+    div.style.margin = '10px';
+    switch (intitule) {
+        case 'Titre' :
+            div.style.fontWeight = 'bold';
+            break;
+        case 'Id' :
+            div.style.fontStyle = "italic";
+            break;
+    }
+    cell.appendChild(div);
+}
+function insertionTrash(cell,indice) {
     var span = document.createElement("span");
     span.setAttribute('class','fa fa-trash fa-2x');
     span.setAttribute('id','trash_'+indice);
     span.setAttribute("style", "color:green;float:right;margin:10px");
     cell.appendChild(span);
 }
-function InsertionTitre(cell,indice) {
-    var div = document.createElement("div");
-    div.setAttribute('id','favori_Titre_'+indice);
-    div.innerHTML ="</br>"+ document.getElementById('Titre_'+indice).textContent+"</br></br>";
-    div.style.fontWeight = 'bold';
-    div.style.margin = '10px';
-    cell.appendChild(div);
-}
-function InsertionId(cell,indice) {
-    var div = document.createElement("div");
-    div.setAttribute('id','favori_Id_'+indice);
-    div.innerHTML =document.getElementById('Id_'+indice).textContent+"</br></br>";
-    div.style.fontStyle = "italic";
-    div.style.margin = '10px';
-    cell.appendChild(div);
-}
-function InsertionAuteur(cell,indice) {
-    var div = document.createElement("div");
-    div.setAttribute('id','favori_Auteur_'+indice);
-    div.innerHTML =document.getElementById('Auteur_'+indice).textContent+"</br></br>";
-    div.style.margin = '10px';
-    cell.appendChild(div);
-}
-function InsertionDescription(cell,indice) {
-    var div = document.createElement("div");
-    div.setAttribute('id','favori_Description_'+indice);
-    div.innerHTML =document.getElementById('Description_'+indice).textContent+"</br></br>";
-    div.style.margin = '10px';
-    cell.appendChild(div);
-}
-function InsertionImage(cell,indice) {
+
+function insertionImage(cell,indice) {
     var img = document.createElement("img");
     img.setAttribute('id','favori_Image_'+indice);
     img.setAttribute('src',document.getElementById('Image_'+indice).getAttribute('src'));
