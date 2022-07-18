@@ -3,6 +3,7 @@ const bouton_addbook=document.getElementById("bt_add");
 const bouton_search=document.getElementById("bt_search");
 const form_search=document.getElementById("divformsearch");
 form_search.style.display='none';
+sessionStorage.clear();
 
 // Déclencheur clique sur le bouton ajouter un livre
 bouton_addbook.addEventListener('click',function() {
@@ -37,7 +38,10 @@ bouton_search.addEventListener('click',function(event) {
     }
 });
 
+//----------------------S'EXECUTE APRES CLIC SUR LE BOUTON RECHERCHER------------------------------------------
+
 function afficheResultatDansTableau(value) {
+console.log(Object.values(value));
     document.getElementById("tabResult").innerHTML="";
     if ((Object.values(value)[1])==0) {
       document.getElementById("tabResult").innerHTML="</br>Aucun livre n'a été trouvé</br></br></br>";
@@ -47,18 +51,20 @@ function afficheResultatDansTableau(value) {
       tbl.width = '100%';
       const tblBody = document.createElement("tbody");
       let i=0;
+      let cpt=0;
       while (i<nbVolume) {
           const row = document.createElement("tr");
           for (let j = 0; j < 2; j++) {
              const cell = document.createElement("td");
              cell.style.verticalAlign = "top";
-             ajoutBookmark(cell,i,j);
-             ajoutIntitule('Titre',cell,value,i,j);
-             ajoutIntitule('Id',cell,value,i,j);
-             ajoutIntitule('Auteur',cell,value,i,j);
-             ajoutIntitule('Description',cell,value,i,j);
-             ajoutImage(cell,value,i,j);
+             ajoutBookmark(cell,cpt);
+             ajoutIntitule('Titre',cell,value,cpt);
+             ajoutIntitule('Id',cell,value,cpt);
+             ajoutIntitule('Auteur',cell,value,cpt);
+             ajoutIntitule('Description',cell,value,cpt);
+             ajoutImage(cell,value,cpt);
              row.appendChild(cell);
+             cpt=cpt+1;
          }
          tblBody.appendChild(row);
          i=i+2;
@@ -74,43 +80,46 @@ function effaceDonneesSaisies() {
     document.getElementById("auteur").value="";
 }
 
-function ajoutBookmark(cell,i,j) {
+//----------AJOUT DU BOOKMARK , LIVRE , ID , AUTEUR , DESCRIPTION et IMAGE DANS LE TABLEAU RESULTATS DE RECHERCHE------------
+
+function ajoutBookmark(cell,cpt) {
     var span = document.createElement("span");
     span.setAttribute('class', 'fa fa-bookmark fa-2x');
-    span.setAttribute('id', i+'-'+j);
+    span.setAttribute('id', cpt);
     span.setAttribute("style", "color:green;float:right;margin:10px");
     cell.appendChild(span);
 
     span.addEventListener('mouseover',function() {
-       document.getElementById(i+'-'+j).style.cursor = "pointer";
+       document.getElementById(cpt).style.cursor = "pointer";
     });
 
     span.addEventListener('click',function() {
-        RecupInfoLivre(i+'-'+j);
+        RecupInfoLivre(cpt);
     });
 }
 
-function ajoutIntitule(intitule,cell,value,i,j) {
+function ajoutIntitule(intitule,cell,value,cpt) {
     var div = document.createElement("div");
     switch (intitule) {
         case 'Titre' :
-            div.setAttribute('id','titre_'+i+'-'+j);
-            div.innerHTML = "</br>"+ "Titre : " + Object.values(value)[2][i+j]['volumeInfo']['title']+"</br></br>";
+            div.setAttribute('id','titre_'+cpt);
+        //    div.innerHTML = "</br>"+ "Titre : " + Object.values(value)[2][cpt]['volumeInfo']['title']+"</br></br>";
+       div.innerHTML=cpt;
             div.style.fontWeight = 'bold';
             break;
         case 'Id' :
-            div.setAttribute('id','id_'+i+'-'+j);
-            div.innerHTML = "Id : " + Object.values(value)[2][i+j]['id']+"</br></br>";
+            div.setAttribute('id','id_'+cpt);
+            div.innerHTML = "Id : " + Object.values(value)[2][cpt]['id']+"</br></br>";
             div.style.fontStyle = "italic";
             break;
         case 'Auteur' :
-            div.setAttribute('id','auteur_'+i+'-'+j);
-            div.innerHTML = "Auteur : " + Object.values(value)[2][i+j]['volumeInfo']['authors'][0]+"</br></br>";
+            div.setAttribute('id','auteur_'+cpt);
+            div.innerHTML = "Auteur : " + Object.values(value)[2][cpt]['volumeInfo']['authors'][0]+"</br></br>";
             break;
         case 'Description' :
-            div.setAttribute('id','description_'+i+'-'+j);
-            if (Object.values(value)[2][i+j]['volumeInfo']['description']) {
-                   div.innerHTML = "Description : " + Object.values(value)[2][i+j]['volumeInfo']['description']+"</br></br>";
+            div.setAttribute('id','description_'+cpt);
+            if (Object.values(value)[2][cpt]['volumeInfo']['description']) {
+                   div.innerHTML = "Description : " + Object.values(value)[2][cpt]['volumeInfo']['description']+"</br></br>";
                 } else {
                    div.innerHTML = "Description : Information manquante "+"</br></br>";
                 }
@@ -120,10 +129,11 @@ function ajoutIntitule(intitule,cell,value,i,j) {
     cell.appendChild(div);
 }
 
-function ajoutImage(cell,value,i,j) {
+function ajoutImage(cell,value,cpt) {
     var img = document.createElement("img");
+    img.setAttribute('id','image_'+cpt);
     try {
-        img.setAttribute('src', Object.values(value)[2][i+j]['volumeInfo']['imageLinks']['thumbnail']);
+        img.setAttribute('src', Object.values(value)[2][cpt]['volumeInfo']['imageLinks']['thumbnail']);
     } catch (error) {
         img.setAttribute('src', "unavailable.png");
     }
@@ -131,53 +141,91 @@ function ajoutImage(cell,value,i,j) {
     cell.appendChild(img);
 }
 
+
+//------------------------------------S EXECUTE APRES CLIC SUR L ICONE BOOKMARK------------------------------
+
 function RecupInfoLivre(indice) {
-if (document.getElementById('MaPochList').innerHTML === "") {
-    const tbl = document.createElement("table");
-    tbl.width = '100%';
-    const tblBody = document.createElement("tbody");
-    const row = document.createElement("tr");
-    const cell = document.createElement("td");
-    cell.style.verticalAlign = "top";
+
+    if (sessionStorage.length==0) {
+       const tbl = document.createElement("table");
+        tbl.width = '100%';
+        const tblBody = document.createElement("tbody");
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.style.width='50%';
+        cell.style.verticalAlign = "top";
+        recupTrash(cell,indice);
+        recupTitre(cell,indice);
+        recupId(cell,indice);
+        recupAuteur(cell,indice);
+        recupDescription(cell,indice);
+        recupImage(cell,indice);
+        row.appendChild(cell);
+        const cell1 = document.createElement("td");
+        cell1.style.width='50%';
+        row.appendChild(cell1);
+        tblBody.appendChild(row);
+        tbl.appendChild(tblBody);
+        document.getElementById("MaPochList").appendChild(tbl);
+        tbl.setAttribute("border", "2");
+
+        sessionStorage.setItem('titre_'+indice,document.getElementById('titre_'+indice).textContent);
+        sessionStorage.setItem('id_'+indice,document.getElementById('id_'+indice).textContent);
+        sessionStorage.setItem('auteur_'+indice,document.getElementById('auteur_'+indice).textContent);
+        sessionStorage.setItem('description_'+indice,document.getElementById('description_'+indice).textContent);
+
+    } else {
+        console.log(Object.keys(sessionStorage));
+
+    }
+
+
+}
+
+//---------- RECUPERATION  DU LIVRE , ID , AUTEUR , DESCRIPTION et IMAGE DANS LE TABLEAU MA POCHLIST------------
+
+function recupTrash(cell,indice) {
+    var span = document.createElement("span");
+    span.setAttribute('class','fa fa-trash fa-2x');
+    span.setAttribute('id','trash_'+indice);
+    span.setAttribute("style", "color:green;float:right;margin:10px");
+    cell.appendChild(span);
+}
+function recupTitre(cell,indice) {
     var div = document.createElement("div");
     div.setAttribute('id','favori_titre_'+indice);
     div.innerHTML ="</br>"+ document.getElementById('titre_'+indice).textContent+"</br></br>";
     div.style.fontWeight = 'bold';
     div.style.margin = '10px';
     cell.appendChild(div);
-
+}
+function recupId(cell,indice) {
     var div = document.createElement("div");
     div.setAttribute('id','favori_id_'+indice);
     div.innerHTML =document.getElementById('id_'+indice).textContent+"</br></br>";
-     div.style.fontStyle = "italic";
+    div.style.fontStyle = "italic";
     div.style.margin = '10px';
     cell.appendChild(div);
-
+}
+function recupAuteur(cell,indice) {
     var div = document.createElement("div");
     div.setAttribute('id','favori_auteur_'+indice);
     div.innerHTML =document.getElementById('auteur_'+indice).textContent+"</br></br>";
     div.style.margin = '10px';
     cell.appendChild(div);
-
-     var div = document.createElement("div");
-     div.setAttribute('id','favori_description_'+indice);
-     div.innerHTML =document.getElementById('description_'+indice).textContent+"</br></br>";
-     div.style.margin = '10px';
-     cell.appendChild(div);
-
-    row.appendChild(cell);
-    tblBody.appendChild(row);
-    tbl.appendChild(tblBody);
-    document.getElementById("MaPochList").appendChild(tbl);
-    tbl.setAttribute("border", "2");
-} else {
-
-
+}
+function recupDescription(cell,indice) {
+    var div = document.createElement("div");
+    div.setAttribute('id','favori_description_'+indice);
+    div.innerHTML =document.getElementById('description_'+indice).textContent+"</br></br>";
+    div.style.margin = '10px';
+    cell.appendChild(div);
+}
+function recupImage(cell,indice) {
+    var img = document.createElement("img");
+    img.setAttribute('id','favori_image_'+indice);
+    img.setAttribute('src',document.getElementById('image_'+indice).getAttribute('src'));
+    img.setAttribute("style", "height:200px;margin:10px");
+    cell.appendChild(img);
 }
 
-
-
-
-
-
-}
