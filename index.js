@@ -45,34 +45,34 @@ function afficheResultatDansTableau(value) {
     console.log(Object.values(value));
     document.getElementById("tabResult").innerHTML="";
     if ((Object.values(value)[1])==0) {
-      document.getElementById("tabResult").innerHTML="</br>Aucun livre n'a été trouvé</br></br></br>";
+        document.getElementById("tabResult").innerHTML="</br>Aucun livre n'a été trouvé</br></br></br>";
     } else {
-      let nbVolume=Object.values(value)[2].length;
-      const tbl = document.createElement("table");
-      tbl.width = '100%';
-      const tblBody = document.createElement("tbody");
-      let i=0;
-      let cpt=0;
-      while (i<nbVolume) {
-          const row = document.createElement("tr");
-          for (let j = 0; j < 2; j++) {
-             const cell = document.createElement("td");
-             cell.style.verticalAlign = "top";
-             ajoutBookmark(cell,cpt);
-             ajoutIntitule('Titre',cell,value,cpt);
-             ajoutIntitule('Id',cell,value,cpt);
-             ajoutIntitule('Auteur',cell,value,cpt);
-             ajoutIntitule('Description',cell,value,cpt);
-             ajoutImage(cell,value,cpt);
-             row.appendChild(cell);
-             cpt=cpt+1;
-         }
+        let nbVolume=Object.values(value)[2].length;
+        const tbl = document.createElement("table");
+        tbl.width = '100%';
+        const tblBody = document.createElement("tbody");
+        let i=0;
+        let cpt=0;
+        while (i<nbVolume) {
+            const row = document.createElement("tr");
+            for (let j = 0; j < 2; j++) {
+                const cell = document.createElement("td");
+                cell.style.verticalAlign = "top";
+                ajoutBookmark(cell,cpt);
+                ajoutIntitule('Titre',cell,value,cpt);
+                ajoutIntitule('Id',cell,value,cpt);
+                ajoutIntitule('Auteur',cell,value,cpt);
+                ajoutIntitule('Description',cell,value,cpt);
+                ajoutImage(cell,value,cpt);
+                row.appendChild(cell);
+                cpt=cpt+1;
+            }
          tblBody.appendChild(row);
          i=i+2;
-      }
-      tbl.appendChild(tblBody);
-      document.getElementById("tabResult").appendChild(tbl);
-      tbl.setAttribute("border", "2");
+        }
+        tbl.appendChild(tblBody);
+        document.getElementById("tabResult").appendChild(tbl);
+        tbl.setAttribute("border", "2");
     }
 }
 
@@ -151,8 +151,7 @@ function InsertionLivreDansFavori(indice) {
         sessionStorage.setItem('Image_'+indice,document.getElementById('Image_'+indice).getAttribute('src'));
 
     } else {
-        console.log(Object.keys(sessionStorage));
-
+        let nbreLivreEnFavori=sessionStorage.length/5;
 
     }
 
