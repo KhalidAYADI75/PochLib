@@ -95,7 +95,7 @@ function ajoutBookmark(cell,cpt) {
     });
 
     span.addEventListener('click',function() {
-        RecupInfoLivre(cpt);
+        InsertionLivreDansFavori(cpt);
     });
 }
 
@@ -140,10 +140,10 @@ function ajoutImage(cell,value,cpt) {
 
 //------------------------------------S EXECUTE APRES CLIC SUR L ICONE BOOKMARK------------------------------
 
-function RecupInfoLivre(indice) {
+function InsertionLivreDansFavori(indice) {
 
     if (sessionStorage.length==0) {
-        creationTableauMaPochList(indice);
+        creationTableauEtInsertionPremierLivre(indice);
         sessionStorage.setItem('Titre_'+indice,document.getElementById('Titre_'+indice).textContent);
         sessionStorage.setItem('Id_'+indice,document.getElementById('Id_'+indice).textContent);
         sessionStorage.setItem('Auteur_'+indice,document.getElementById('Auteur_'+indice).textContent);
@@ -153,6 +153,7 @@ function RecupInfoLivre(indice) {
     } else {
         console.log(Object.keys(sessionStorage));
 
+
     }
 
 
@@ -160,20 +161,21 @@ function RecupInfoLivre(indice) {
 
 //---------------------------------CREATION DU TABLEAU MA POCHLIST-----------------------------------------------
 
-function creationTableauMaPochList(indice) {
+function creationTableauEtInsertionPremierLivre(indice) {
     const tbl = document.createElement("table");
     tbl.width = '100%';
+    tbl.setAttribute("border", "2");
     const tblBody = document.createElement("tbody");
     const row = document.createElement("tr");
     const cell = document.createElement("td");
     cell.style.width='50%';
     cell.style.verticalAlign = "top";
-    recupTrash(cell,indice);
-    recupTitre(cell,indice);
-    recupId(cell,indice);
-    recupAuteur(cell,indice);
-    recupDescription(cell,indice);
-    recupImage(cell,indice);
+    InsertionTrash(cell,indice);
+    InsertionTitre(cell,indice);
+    InsertionId(cell,indice);
+    InsertionAuteur(cell,indice);
+    InsertionDescription(cell,indice);
+    InsertionImage(cell,indice);
     row.appendChild(cell);
     const cell1 = document.createElement("td");
     cell1.style.width='50%';
@@ -181,19 +183,20 @@ function creationTableauMaPochList(indice) {
     tblBody.appendChild(row);
     tbl.appendChild(tblBody);
     document.getElementById("MaPochList").appendChild(tbl);
-    tbl.setAttribute("border", "2");
+
 }
+
 
 //---------- RECUPERATION  DU LIVRE , ID , AUTEUR , DESCRIPTION et IMAGE DANS LE TABLEAU MA POCHLIST------------
 
-function recupTrash(cell,indice) {
+function InsertionTrash(cell,indice) {
     var span = document.createElement("span");
     span.setAttribute('class','fa fa-trash fa-2x');
     span.setAttribute('id','trash_'+indice);
     span.setAttribute("style", "color:green;float:right;margin:10px");
     cell.appendChild(span);
 }
-function recupTitre(cell,indice) {
+function InsertionTitre(cell,indice) {
     var div = document.createElement("div");
     div.setAttribute('id','favori_Titre_'+indice);
     div.innerHTML ="</br>"+ document.getElementById('Titre_'+indice).textContent+"</br></br>";
@@ -201,7 +204,7 @@ function recupTitre(cell,indice) {
     div.style.margin = '10px';
     cell.appendChild(div);
 }
-function recupId(cell,indice) {
+function InsertionId(cell,indice) {
     var div = document.createElement("div");
     div.setAttribute('id','favori_Id_'+indice);
     div.innerHTML =document.getElementById('Id_'+indice).textContent+"</br></br>";
@@ -209,21 +212,21 @@ function recupId(cell,indice) {
     div.style.margin = '10px';
     cell.appendChild(div);
 }
-function recupAuteur(cell,indice) {
+function InsertionAuteur(cell,indice) {
     var div = document.createElement("div");
     div.setAttribute('id','favori_Auteur_'+indice);
     div.innerHTML =document.getElementById('Auteur_'+indice).textContent+"</br></br>";
     div.style.margin = '10px';
     cell.appendChild(div);
 }
-function recupDescription(cell,indice) {
+function InsertionDescription(cell,indice) {
     var div = document.createElement("div");
     div.setAttribute('id','favori_Description_'+indice);
     div.innerHTML =document.getElementById('Description_'+indice).textContent+"</br></br>";
     div.style.margin = '10px';
     cell.appendChild(div);
 }
-function recupImage(cell,indice) {
+function InsertionImage(cell,indice) {
     var img = document.createElement("img");
     img.setAttribute('id','favori_Image_'+indice);
     img.setAttribute('src',document.getElementById('Image_'+indice).getAttribute('src'));
