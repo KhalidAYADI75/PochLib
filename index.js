@@ -41,13 +41,12 @@ function afficheResultatDansTableau(resultatRechercheLivres) {
     let lesLivres = [];
     lesLivres = recupTousLesLivres(resultatRechercheLivres.items);
     console.log('deded');
-    console.log(lesLivres);
-    document.getElementById("tabResult").innerHTML="";
-    if ((Object.values(resultatRechercheLivres)[1])==0) {
-      document.getElementById("tabResult").innerHTML="</br>Aucun livre n'a été trouvé</br></br></br>";
+    console.log(lesLivres.length);
+    document.getElementById("container").innerHTML="";
+    if (lesLivres.length==0) {
+      document.getElementById("container").innerHTML="</br>Aucun livre n'a été trouvé</br></br></br>";
     } else {
-
-
+       affichageDesLivres(lesLivres);
     }
 
 }
@@ -56,3 +55,32 @@ function effaceDonneesSaisies() {
     document.getElementById("titre_livre").value="";
     document.getElementById("auteur").value="";
 }
+
+function affichageDesLivres(lesLivres) {
+    var Container = document.getElementById("container");
+    for (let i=0;i<lesLivres.length;i++) {
+        var div = document.createElement("div");
+        div.innerHTML=lesLivres[i].titre;
+        document.getElementById("container").appendChild(div);
+        var div = document.createElement("div");
+        div.innerHTML=lesLivres[i].id;
+        document.getElementById("container").appendChild(div);
+    }
+
+/*    let numberOfRows = 10;
+    let i = 0;
+    let x = numberOfRows;
+    for (i =  0; i < x ; i++) {
+        var div = document.createElement("div");
+        div.innerHTML = 'mlazejdmlazdmlkazjdmlkzajdlmkazjdmlkazjadlmkazjd';
+        document.getElementById("container").appendChild(div);
+
+        var div = document.createElement("div");
+        div.innerHTML = 'frfrfrfrf';
+        document.getElementById("container").appendChild(div);
+    } */
+}
+
+
+
+

@@ -40,7 +40,13 @@ input {
    width: 100%;
 }
 
-.grid {
-display:grid;
-grid-template-columns:20% 60% 20%;
+:root {
+  --columns-row: 2;
 }
+
+#container {
+      display: grid;
+    /*  grid-template-columns: repeat(var(--columns-row), 1fr); */
+     grid-template-columns: 50% 50%;
+    /*  grid-template-rows: repeat(var(--columns-row), 1fr); */
+  }
