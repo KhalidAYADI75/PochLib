@@ -45,6 +45,7 @@ input {
 }
 
 #container {
+    text-align:left;
       display: grid;
     /*  grid-template-columns: repeat(var(--columns-row), 1fr); */
      grid-template-columns: 50% 50%;

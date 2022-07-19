@@ -3,24 +3,26 @@ class Livre {
         this.titre = livreGoogle.volumeInfo.title;
         this.id = livreGoogle.id;
         this.auteur = livreGoogle.volumeInfo.authors[0];
-        if ('volumeInfo.description' in livreGoogle) {
-            this.description = livreGoogle.volumeInfo.description;
-        } else {
+
+        try {
+            this.description = livreGoogle.volumeInfo.description.substring(0,200);
+        } catch (error) {
             this.description='Information manquante';
         }
-        if ('volumeInfo.imageLinks.thumbnail' in livreGoogle) {
-            this.image = livreGoogle.volumeInfo.imageLinks.thumbnail;
-        } else {
-            this.image="unavailable.png";
-        }
+
+         try {
+             this.image = livreGoogle.volumeInfo.imageLinks.thumbnail;
+         } catch (error) {
+            this.image="./unavailable.png";
+         }
     }
 }
 
  function recupTousLesLivres(tousLesLivres) {
-    let lesLivres = [];
+    let tabLivres = [];
     for (let i=0;i<tousLesLivres.length;i++) {
-        lesLivres.push(new Livre(tousLesLivres[i]));
+        tabLivres.push(new Livre(tousLesLivres[i]));
     }
-    return lesLivres;
+    return tabLivres;
 }
 

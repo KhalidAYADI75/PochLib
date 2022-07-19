@@ -40,8 +40,8 @@ bouton_search.addEventListener('click',function(event) {
 function afficheResultatDansTableau(resultatRechercheLivres) {
     let lesLivres = [];
     lesLivres = recupTousLesLivres(resultatRechercheLivres.items);
-    console.log('deded');
-    console.log(lesLivres.length);
+    console.log('debut')
+    console.log(lesLivres);
     document.getElementById("container").innerHTML="";
     if (lesLivres.length==0) {
       document.getElementById("container").innerHTML="</br>Aucun livre n'a été trouvé</br></br></br>";
@@ -60,25 +60,16 @@ function affichageDesLivres(lesLivres) {
     var Container = document.getElementById("container");
     for (let i=0;i<lesLivres.length;i++) {
         var div = document.createElement("div");
-        div.innerHTML=lesLivres[i].titre;
-        document.getElementById("container").appendChild(div);
-        var div = document.createElement("div");
-        div.innerHTML=lesLivres[i].id;
+        div.style.height="370px";
+        div.style.border="1px solid grey";
+        div.style.padding="10px";
+        div.innerHTML="</b></br><b>Titre : "+lesLivres[i].titre+"</b></br></br>" +
+        "<i>Id : "+lesLivres[i].id+"</i></br></br>" +
+        "Auteur : "+lesLivres[i].auteur+"</br></br>" +
+        "Description : "+lesLivres[i].description+"</br></br></br>" +
+        "<img width='80px' src="+lesLivres[i].image+"/>";
         document.getElementById("container").appendChild(div);
     }
-
-/*    let numberOfRows = 10;
-    let i = 0;
-    let x = numberOfRows;
-    for (i =  0; i < x ; i++) {
-        var div = document.createElement("div");
-        div.innerHTML = 'mlazejdmlazdmlkazjdmlkzajdlmkazjdmlkazjadlmkazjd';
-        document.getElementById("container").appendChild(div);
-
-        var div = document.createElement("div");
-        div.innerHTML = 'frfrfrfrf';
-        document.getElementById("container").appendChild(div);
-    } */
 }
 
 
