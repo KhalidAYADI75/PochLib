@@ -38,14 +38,22 @@ bouton_search.addEventListener('click',function(event) {
 });
 
 function afficheResultatDansTableau(value) {
+
+//    livre=new Livre(value.items[0]);
+//    console.log(livre.titre);
+    console.log("SEPARATIONS");
     console.log (value);
+    console.log("SEPARATIONS");
+    console.log(value.items[0]);
+    console.log("SEPARATIONS");
+ //   recupèreTousLesLivres(value.items);
+    console.log("SEPARATIONS");
     console.log (Object.values(value)[1]);
     document.getElementById("tabResult").innerHTML="";
     if ((Object.values(value)[1])==0) {
       document.getElementById("tabResult").innerHTML="</br>Aucun livre n'a été trouvé</br></br></br>";
     } else {
       let nbVolume=Object.values(value)[2].length;
-      console.log(nbVolume);
       const tbl = document.createElement("table");
       tbl.width = '100%';
       const tblBody = document.createElement("tbody");
@@ -91,16 +99,13 @@ function ajoutIntitule(intitule,cell,value,i,j) {
         case 'Titre' :
             div.innerHTML = "</br>"+ "Titre : " + Object.values(value)[2][i+j]['volumeInfo']['title']+"</br></br>";
             div.style.fontWeight = 'bold';
-            console.log("titre: "+Object.values(value)[2][i+j]['volumeInfo']['title']);
             break;
         case 'Id' :
             div.innerHTML = "Id : " + Object.values(value)[2][i+j]['id']+"</br></br>";
             div.style.fontStyle = "italic";
-            console.log("id: "+Object.values(value)[2][i+j]['id']);
             break;
         case 'Auteur' :
             div.innerHTML = "Auteur : " + Object.values(value)[2][i+j]['volumeInfo']['authors'][0]+"</br></br>";
-            console.log("auteur: "+Object.values(value)[2][i+j]['volumeInfo']['authors'][0]);
             break;
         case 'Description' :
         if (Object.values(value)[2][i+j]['volumeInfo']['description']) {
@@ -108,7 +113,6 @@ function ajoutIntitule(intitule,cell,value,i,j) {
             } else {
                div.innerHTML = "Description : Information manquante "+"</br></br>";
             }
-            console.log("description: "+Object.values(value)[2][i+j]['volumeInfo']['description']);
             div.innerHTML = div.innerHTML.substr(0,200);
     }
     div.style.margin = '10px';
