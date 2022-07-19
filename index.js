@@ -39,8 +39,8 @@ bouton_search.addEventListener('click',function(event) {
 
 function afficheResultatDansTableau(value) {
 
-//    livre=new Livre(value.items[0]);
-//    console.log(livre.titre);
+    let livre=new Livre(value.items[0]);
+    console.log(livre.titre);
     console.log("SEPARATIONS");
     console.log (value);
     console.log("SEPARATIONS");
