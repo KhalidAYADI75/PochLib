@@ -27,8 +27,8 @@ bouton_search.addEventListener('click',function(event) {
         return (res.json());
         }
         })
-        .then(function(value) {
-        afficheResultatDansTableau(value);
+        .then(function(resultatRechercheLivres) {
+        afficheResultatDansTableau(resultatRechercheLivres);
         effaceDonneesSaisies();
         })
         .catch (function(err) {
@@ -37,41 +37,17 @@ bouton_search.addEventListener('click',function(event) {
     }
 });
 
-function afficheResultatDansTableau(value) {
-
-    let livre=new Livre(value.items[0]);
- //   console.log(livre.titre);
-
-    recupTousLesLivres(value.items);
- //   console.log(value.items[0].volumeInfo.title);
+function afficheResultatDansTableau(resultatRechercheLivres) {
+    let lesLivres = [];
+    lesLivres = recupTousLesLivres(resultatRechercheLivres.items);
+    console.log('deded');
+    console.log(lesLivres);
     document.getElementById("tabResult").innerHTML="";
-    if ((Object.values(value)[1])==0) {
+    if ((Object.values(resultatRechercheLivres)[1])==0) {
       document.getElementById("tabResult").innerHTML="</br>Aucun livre n'a été trouvé</br></br></br>";
     } else {
-      let nbVolume=Object.values(value)[2].length;
-      const tbl = document.createElement("table");
-      tbl.width = '100%';
-      const tblBody = document.createElement("tbody");
-      let i=0;
-      while (i<nbVolume) {
-          const row = document.createElement("tr");
-          for (let j = 0; j < 2; j++) {
-             const cell = document.createElement("td");
-             cell.style.verticalAlign = "top";
-             ajoutBookmark(cell);
-             ajoutIntitule('Titre',cell,value,i,j);
-             ajoutIntitule('Id',cell,value,i,j);
-             ajoutIntitule('Auteur',cell,value,i,j);
-             ajoutIntitule('Description',cell,value,i,j);
-             ajoutImage(cell,value,i,j);
-             row.appendChild(cell);
-         }
-         tblBody.appendChild(row);
-         i=i+2;
-      }
-      tbl.appendChild(tblBody);
-      document.getElementById("tabResult").appendChild(tbl);
-      tbl.setAttribute("border", "2");
+
+
     }
 
 }
@@ -79,48 +55,4 @@ function afficheResultatDansTableau(value) {
 function effaceDonneesSaisies() {
     document.getElementById("titre_livre").value="";
     document.getElementById("auteur").value="";
-}
-
-function ajoutBookmark(cell) {
-    var span = document.createElement("span");
-    span.setAttribute('class', 'fa fa-bookmark fa-2x');
-    span.setAttribute("style", "color:green;float:right;margin:10px");
-    cell.appendChild(span);
-}
-
-function ajoutIntitule(intitule,cell,value,i,j) {
-    var div = document.createElement("div");
-    switch (intitule) {
-        case 'Titre' :
-            div.innerHTML = "</br>"+ "Titre : " + Object.values(value)[2][i+j]['volumeInfo']['title']+"</br></br>";
-            div.style.fontWeight = 'bold';
-            break;
-        case 'Id' :
-            div.innerHTML = "Id : " + Object.values(value)[2][i+j]['id']+"</br></br>";
-            div.style.fontStyle = "italic";
-            break;
-        case 'Auteur' :
-            div.innerHTML = "Auteur : " + Object.values(value)[2][i+j]['volumeInfo']['authors'][0]+"</br></br>";
-            break;
-        case 'Description' :
-        if (Object.values(value)[2][i+j]['volumeInfo']['description']) {
-               div.innerHTML = "Description : " + Object.values(value)[2][i+j]['volumeInfo']['description']+"</br></br>";
-            } else {
-               div.innerHTML = "Description : Information manquante "+"</br></br>";
-            }
-            div.innerHTML = div.innerHTML.substr(0,200);
-    }
-    div.style.margin = '10px';
-    cell.appendChild(div);
-}
-
-function ajoutImage(cell,value,i,j) {
-    var img = document.createElement("img");
-    try {
-        img.setAttribute('src', Object.values(value)[2][i+j]['volumeInfo']['imageLinks']['thumbnail']);
-    } catch (error) {
-        img.setAttribute('src', "unavailable.png");
-    }
-    img.setAttribute("style", "height:200px;margin:10px");
-    cell.appendChild(img);
 }
