@@ -40,15 +40,10 @@ bouton_search.addEventListener('click',function(event) {
 function afficheResultatDansTableau(value) {
 
     let livre=new Livre(value.items[0]);
-    console.log(livre.titre);
-    console.log("SEPARATIONS");
-    console.log (value);
-    console.log("SEPARATIONS");
-    console.log(value.items[0]);
-    console.log("SEPARATIONS");
- //   recupèreTousLesLivres(value.items);
-    console.log("SEPARATIONS");
-    console.log (Object.values(value)[1]);
+ //   console.log(livre.titre);
+
+    recupTousLesLivres(value.items);
+ //   console.log(value.items[0].volumeInfo.title);
     document.getElementById("tabResult").innerHTML="";
     if ((Object.values(value)[1])==0) {
       document.getElementById("tabResult").innerHTML="</br>Aucun livre n'a été trouvé</br></br></br>";
