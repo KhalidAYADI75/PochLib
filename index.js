@@ -84,7 +84,7 @@ function constructionCellule(rechercheOuBookmark,leLivre) {
         if (span.getAttribute('class')=='fa fa-bookmark fa-2x') {
             copieLivreDansBookmark(leLivre);
         } else {
-            supprimeDesFavoris(leLivre);
+            supprimeLivreDesFavoris(leLivre);
         }
     });
     span.addEventListener('mouseover', function() {
@@ -120,7 +120,7 @@ function copieLivreDansBookmark(leLivre) {
     div=constructionCellule(1,leLivre);
     document.getElementById("pochlistecontent").appendChild(div);
 }
-function supprimeDesFavoris(leLivre) {
+function supprimeLivreDesFavoris(leLivre) {
 
 }
 
