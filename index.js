@@ -46,7 +46,6 @@ function afficheResultatDansTableau(resultatRechercheLivres) {
     } else {
        affichageDesLivres(lesLivres);
     }
-
 }
 
 function effaceDonneesSaisies() {
@@ -57,42 +56,64 @@ function effaceDonneesSaisies() {
 function affichageDesLivres(lesLivres) {
      var Container = document.getElementById("container");
      for (let i=0;i<lesLivres.length;i++) {
-        div=constructionCellule(0,lesLivres,i)
+        div=constructionCellule(0,lesLivres[i])
         document.getElementById("container").appendChild(div);
     }
 }
 
-function constructionCellule(rechercheOuBookmark,lesLivres,indice) {
-    let lIcone;
+function constructionCellule(rechercheOuBookmark,leLivre) {
+
     var div = document.createElement("div");
     div.style.height = "370px";
     div.style.border = "1px solid grey";
-    div.style.padding = "10px";
-    let leTitre = "</b></br><b>Titre : "+lesLivres[indice].titre+"</b>";
+    div.style.padding = "20px";
+
+    var div1 = document.createElement("div");
+    div1.textContent = "Titre : "+leLivre.titre;
+    div1.setAttribute('style','font-weight:bold;margin-top:20px;');
+    div.appendChild(div1);
+
+    var span = document.createElement("span");
     if (rechercheOuBookmark==0) {
-        lIcone = "<span style='float:right;color:green;cursor:pointer' onclick=\'copieLivreDansBookmark(" +indice+ ")\' class='fa fa-bookmark fa-2x'></span></br></br>";
+        span.setAttribute('class','fa fa-bookmark fa-2x');
     } else {
-        lIcone = "<span style='float:right;color:green;cursor:pointer' onclick=\'supprimeDeBookmark(" +indice+ ")\' class='fa fa-trash fa-2x'></span></br></br>";
+        span.setAttribute('class','fa fa-trash fa-2x');
     }
-    let lId = "<i>Id : "+lesLivres[indice].id+"</i></br></br>";
-    let lAuteur = "Auteur : "+lesLivres[indice].auteur+"</br></br>";
-    let laDescription =  "Description : "+lesLivres[indice].description+"</br></br></br>";
-    let lImage = "<img width='80px' src="+lesLivres[indice].image+"/>";
-    div.innerHTML =leTitre+lIcone+lId+lAuteur+laDescription+lImage;
-    div.setAttribute('id','livre-'+indice);
+    span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green');
+    span.addEventListener('click', function() {
+        copieLivreDansBookmark(leLivre)
+    });
+    span.addEventListener('mouseover', function() {
+        span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green;cursor:pointer');
+    });
+    div.appendChild(span);
+
+    var div1 = document.createElement("div");
+    div1.textContent = "Id : "+leLivre.id;
+    div1.setAttribute('style','font-style:italic;margin-top:20px;');
+    div.appendChild(div1);
+
+    var div1 = document.createElement("div");
+    div1.textContent = "Auteur : "+leLivre.auteur;
+    div1.setAttribute('style','margin-top:20px;');
+    div.appendChild(div1);
+
+    var div1 = document.createElement("div");
+    div1.textContent = "Description : "+leLivre.description;
+    div1.setAttribute('style','margin-top:20px;');
+    div.appendChild(div1);
+
+    var img = document.createElement("img");
+    img.src=leLivre.image;
+    img.setAttribute('style','margin-top:30px;width:80px');
+    div.appendChild(img);
     return div;
 
 }
 
-function copieLivreDansBookmark(indiceLivre) {
-var divDestination = document.createElement("div");
-divDestination.setAttribute('id','pochlist-'+indiceLivre);
-var divSource = document.getElementById('livre-'+indiceLivre);
-document.getElementById("pochlistecontent").appendChild(divDestination);
-divDestination.innerHTML = divSource.innerHTML;
-divDestination.style.height = "370px";
-divDestination.style.border = "1px solid grey";
-divDestination.style.padding = "10px";
-
+function copieLivreDansBookmark(leLivre) {
+    var bookmark = document.getElementById("pochlistecontent");
+    div=constructionCellule(1,leLivre);
+    document.getElementById("pochlistecontent").appendChild(div);
 }
 
