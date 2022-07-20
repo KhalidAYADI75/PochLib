@@ -40,7 +40,6 @@ bouton_search.addEventListener('click',function(event) {
 function afficheResultatDansTableau(resultatRechercheLivres) {
     let lesLivres = [];
     lesLivres = recupTousLesLivres(resultatRechercheLivres.items);
-    console.log('debut')
     console.log(lesLivres);
     document.getElementById("container").innerHTML="";
     if (lesLivres.length==0) {
@@ -58,18 +57,29 @@ function effaceDonneesSaisies() {
 
 function affichageDesLivres(lesLivres) {
     var Container = document.getElementById("container");
-    for (let i=0;i<lesLivres.length;i++) {
-        var div = document.createElement("div");
-        div.style.height="370px";
-        div.style.border="1px solid grey";
-        div.style.padding="10px";
-        div.innerHTML="</b></br><b>Titre : "+lesLivres[i].titre+"</b></br></br>" +
-        "<i>Id : "+lesLivres[i].id+"</i></br></br>" +
-        "Auteur : "+lesLivres[i].auteur+"</br></br>" +
-        "Description : "+lesLivres[i].description+"</br></br></br>" +
-        "<img width='80px' src="+lesLivres[i].image+"/>";
-        document.getElementById("container").appendChild(div);
-    }
+    console.log ('debut');
+    console.log(lesLivres[0].titre);
+    let lesTitres;
+    console.log ('autredebut');
+    lesTitres=lesLivres[0].titre;
+    console.log(lesTitres);
+        for (let i=0;i<lesLivres.length;i++) {
+        //    LesTitres=lesLivres[i].titre;
+        //    console.log(lesTitres);
+            var div = document.createElement("div");
+            div.style.height="370px";
+            div.style.border="1px solid grey";
+            div.style.padding="10px";
+            div.innerHTML="</b></br><b>Titre : "+lesLivres[i].titre+"</b>" +
+            "<i style='float:right;color:green;cursor:pointer' onClick='copieLivreDansBookmark("+lesLivres[i].titre+")' class='fa fa-bookmark fa-2x'></i></br></br>" +
+            "<i>Id : "+lesLivres[i].id+"</i></br></br>" +
+            "Auteur : "+lesLivres[i].auteur+"</br></br>" +
+            "Description : "+lesLivres[i].description+"</br></br></br>" +
+            "<img width='80px' src="+lesLivres[i].image+"/>";
+            document.getElementById("container").appendChild(div);
+        }
+
+
 }
 
 
