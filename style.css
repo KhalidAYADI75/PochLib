@@ -44,7 +44,7 @@ input {
   --columns-row: 2;
 }
 
-#container {
+.grid {
     text-align:left;
       display: grid;
     /*  grid-template-columns: repeat(var(--columns-row), 1fr); */

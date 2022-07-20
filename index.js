@@ -40,7 +40,6 @@ bouton_search.addEventListener('click',function(event) {
 function afficheResultatDansTableau(resultatRechercheLivres) {
     let lesLivres = [];
     lesLivres = recupTousLesLivres(resultatRechercheLivres.items);
-    console.log(lesLivres);
     document.getElementById("container").innerHTML="";
     if (lesLivres.length==0) {
       document.getElementById("container").innerHTML="</br>Aucun livre n'a été trouvé</br></br></br>";
@@ -56,32 +55,44 @@ function effaceDonneesSaisies() {
 }
 
 function affichageDesLivres(lesLivres) {
-    var Container = document.getElementById("container");
-    console.log ('debut');
-    console.log(lesLivres[0].titre);
-    let lesTitres;
-    console.log ('autredebut');
-    lesTitres=lesLivres[0].titre;
-    console.log(lesTitres);
-        for (let i=0;i<lesLivres.length;i++) {
-        //    LesTitres=lesLivres[i].titre;
-        //    console.log(lesTitres);
-            var div = document.createElement("div");
-            div.style.height="370px";
-            div.style.border="1px solid grey";
-            div.style.padding="10px";
-            div.innerHTML="</b></br><b>Titre : "+lesLivres[i].titre+"</b>" +
-            "<i style='float:right;color:green;cursor:pointer' onClick='copieLivreDansBookmark("+lesLivres[i].titre+")' class='fa fa-bookmark fa-2x'></i></br></br>" +
-            "<i>Id : "+lesLivres[i].id+"</i></br></br>" +
-            "Auteur : "+lesLivres[i].auteur+"</br></br>" +
-            "Description : "+lesLivres[i].description+"</br></br></br>" +
-            "<img width='80px' src="+lesLivres[i].image+"/>";
-            document.getElementById("container").appendChild(div);
-        }
+     var Container = document.getElementById("container");
+     for (let i=0;i<lesLivres.length;i++) {
+        div=constructionCellule(0,lesLivres,i)
+        document.getElementById("container").appendChild(div);
+    }
+}
 
+function constructionCellule(rechercheOuBookmark,lesLivres,indice) {
+    let lIcone;
+    var div = document.createElement("div");
+    div.style.height = "370px";
+    div.style.border = "1px solid grey";
+    div.style.padding = "10px";
+    let leTitre = "</b></br><b>Titre : "+lesLivres[indice].titre+"</b>";
+    if (rechercheOuBookmark==0) {
+        lIcone = "<span style='float:right;color:green;cursor:pointer' onclick=\'copieLivreDansBookmark(" +indice+ ")\' class='fa fa-bookmark fa-2x'></span></br></br>";
+    } else {
+        lIcone = "<span style='float:right;color:green;cursor:pointer' onclick=\'supprimeDeBookmark(" +indice+ ")\' class='fa fa-trash fa-2x'></span></br></br>";
+    }
+    let lId = "<i>Id : "+lesLivres[indice].id+"</i></br></br>";
+    let lAuteur = "Auteur : "+lesLivres[indice].auteur+"</br></br>";
+    let laDescription =  "Description : "+lesLivres[indice].description+"</br></br></br>";
+    let lImage = "<img width='80px' src="+lesLivres[indice].image+"/>";
+    div.innerHTML =leTitre+lIcone+lId+lAuteur+laDescription+lImage;
+    div.setAttribute('id','livre-'+indice);
+    return div;
 
 }
 
+function copieLivreDansBookmark(indiceLivre) {
+var divDestination = document.createElement("div");
+divDestination.setAttribute('id','pochlist-'+indiceLivre);
+var divSource = document.getElementById('livre-'+indiceLivre);
+document.getElementById("pochlistecontent").appendChild(divDestination);
+divDestination.innerHTML = divSource.innerHTML;
+divDestination.style.height = "370px";
+divDestination.style.border = "1px solid grey";
+divDestination.style.padding = "10px";
 
-
+}
 
