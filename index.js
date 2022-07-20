@@ -81,7 +81,11 @@ function constructionCellule(rechercheOuBookmark,leLivre) {
     }
     span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green');
     span.addEventListener('click', function() {
-        copieLivreDansBookmark(leLivre)
+        if (span.getAttribute('class')=='fa fa-bookmark fa-2x') {
+            copieLivreDansBookmark(leLivre);
+        } else {
+            supprimeDesFavoris(leLivre);
+        }
     });
     span.addEventListener('mouseover', function() {
         span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green;cursor:pointer');
@@ -115,5 +119,8 @@ function copieLivreDansBookmark(leLivre) {
     var bookmark = document.getElementById("pochlistecontent");
     div=constructionCellule(1,leLivre);
     document.getElementById("pochlistecontent").appendChild(div);
+}
+function supprimeDesFavoris(leLivre) {
+
 }
 
