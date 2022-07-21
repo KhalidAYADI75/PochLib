@@ -68,10 +68,7 @@ function constructionCellule(rechercheOuBookmark,leLivre) {
     div.style.border = "1px solid grey";
     div.style.padding = "20px";
 
-    var div1 = document.createElement("div");
-    div1.textContent = "Titre : "+leLivre.titre;
-    div1.setAttribute('style','font-weight:bold;margin-top:20px;');
-    div.appendChild(div1);
+    creationIntitule('Titre',div,leLivre);
 
     var span = document.createElement("span");
     if (rechercheOuBookmark==0) {
@@ -92,20 +89,9 @@ function constructionCellule(rechercheOuBookmark,leLivre) {
     });
     div.appendChild(span);
 
-    var div1 = document.createElement("div");
-    div1.textContent = "Id : "+leLivre.id;
-    div1.setAttribute('style','font-style:italic;margin-top:20px;');
-    div.appendChild(div1);
-
-    var div1 = document.createElement("div");
-    div1.textContent = "Auteur : "+leLivre.auteur;
-    div1.setAttribute('style','margin-top:20px;');
-    div.appendChild(div1);
-
-    var div1 = document.createElement("div");
-    div1.textContent = "Description : "+leLivre.description;
-    div1.setAttribute('style','margin-top:20px;');
-    div.appendChild(div1);
+    creationIntitule('Id',div,leLivre);
+    creationIntitule('Auteur',div,leLivre);
+    creationIntitule('Description',div,leLivre);
 
     var img = document.createElement("img");
     img.src=leLivre.image;
@@ -113,6 +99,33 @@ function constructionCellule(rechercheOuBookmark,leLivre) {
     div.appendChild(img);
     return div;
 
+}
+
+function creationIntitule(intitule,leParent,leLivre) {
+    var div1 = document.createElement("div");
+    switch (intitule) {
+        case 'Titre' :  {
+            div1.textContent = "Titre : "+leLivre.titre;
+            div1.setAttribute('style','font-weight:bold;margin-top:20px;');
+            break;
+        }
+        case 'Id' : {
+            div1.textContent = "Id : "+leLivre.id;
+            div1.setAttribute('style','font-style:italic;margin-top:20px;');
+            break;
+        }
+        case 'Auteur' : {
+            div1.textContent = "Auteur : "+leLivre.auteur;
+            div1.setAttribute('style','margin-top:20px;');
+            break;
+        }
+        case 'Description' : {
+            div1.textContent = "Description : "+leLivre.description;
+            div1.setAttribute('style','margin-top:20px;');
+            break;
+        }
+    }
+    leParent.appendChild(div1);
 }
 
 function copieLivreDansBookmark(leLivre) {
