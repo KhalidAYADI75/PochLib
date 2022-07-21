@@ -63,12 +63,12 @@ function affichageDesLivres(lesLivres) {
 
 function constructionCellule(rechercheOuBookmark,leLivre) {
 
-    var div = document.createElement("div");
-    div.style.height = "370px";
-    div.style.border = "1px solid grey";
-    div.style.padding = "20px";
+    var divParent = document.createElement("div");
+    divParent.style.height = "370px";
+    divParent.style.border = "1px solid grey";
+    divParent.style.padding = "20px";
 
-    creationIntitule('Titre',div,leLivre.titre,'font-weight:bold;margin-top:20px;');
+    creationComposant('div','Titre',divParent,leLivre.titre,'font-weight:bold;margin-top:20px;');
 
     var span = document.createElement("span");
     if (rechercheOuBookmark==0) {
@@ -88,25 +88,25 @@ function constructionCellule(rechercheOuBookmark,leLivre) {
     span.addEventListener('mouseover', function() {
         span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green;cursor:pointer');
     });
-    div.appendChild(span);
+    divParent.appendChild(span);
 
-    creationIntitule('Id',div,leLivre.id,'font-style:italic;margin-top:20px;');
-    creationIntitule('Auteur',div,leLivre.auteur,'margin-top:20px;');
-    creationIntitule('Description',div,leLivre.description,'margin-top:20px;');
-
-    var img = document.createElement("img");
-    img.src=leLivre.image;
-    img.setAttribute('style','margin-top:30px;width:80px');
-    div.appendChild(img);
-    return div;
+    creationComposant('div','Id',divParent,leLivre.id,'font-style:italic;margin-top:20px;');
+    creationComposant('div','Auteur',divParent,leLivre.auteur,'margin-top:20px;');
+    creationComposant('div','Description',divParent,leLivre.description,'margin-top:20px;');
+    creationComposant('img','',divParent,leLivre.image,'margin-top:30px;width:80px');
+    return divParent;
 
 }
 
-function creationIntitule(intitule,leParent,elementLivre,leStyle) {
-    var div1 = document.createElement("div");
-    div1.textContent = "Titre : "+elementLivre;
-    div1.setAttribute('style',leStyle);
-    leParent.appendChild(div1);
+function creationComposant(divOuImg,intitule,leParent,elementLivre,leStyle) {
+    var creationDiv = document.createElement(divOuImg);
+    if (divOuImg=='img') {
+        creationDiv.src=elementLivre;
+    } else {
+        creationDiv.textContent = "Titre : "+elementLivre;
+    }
+    creationDiv.setAttribute('style',leStyle);
+    leParent.appendChild(creationDiv);
 }
 
 function copieLivreDansBookmark(leLivre) {
