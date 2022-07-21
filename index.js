@@ -3,6 +3,8 @@ const bouton_addbook=document.getElementById("bt_add");
 const bouton_search=document.getElementById("bt_search");
 const form_search=document.getElementById("divformsearch");
 form_search.style.display='none';
+//sessionStorage.clear();
+chargementLivreDuBookmark();
 
 // Déclencheur clique sur le bouton ajouter un livre
 bouton_addbook.addEventListener('click',function() {
@@ -79,9 +81,13 @@ function constructionCellule(rechercheOuBookmark,leLivre) {
     span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green');
 
     span.addEventListener('click', function() {
+        let dejaDansBokkmark;
         if (span.getAttribute('class')=='fa fa-bookmark fa-2x') {
-            copieLivreDansBookmark(leLivre);
-            enregistreLivreDansBookmark(leLivre);
+            dejaDansBokkmark=verifieSiLivreDansBookmark(leLivre);
+            if (dejaDansBokkmark==false) {
+                 copieLivreDansBookmark(leLivre);
+                 enregistreLivreDansBookmark(leLivre);
+            }
         } else {
             retireLivreDesFavoris(leLivre);
         }
@@ -110,6 +116,17 @@ function creationComposant(divOuImg,intitule,leParent,elementLivre,leStyle) {
     leParent.appendChild(creationDiv);
 }
 
+function verifieSiLivreDansBookmark(leLivre) {
+    let dejaDansBookmark=false;
+    for(let key of Object.keys(sessionStorage)) {
+        if (leLivre.id==key) {
+            alert ('Vous ne pouvez ajouter deux fois le même livre');
+            dejaDansBookmark=true;
+        }
+    }
+    return dejaDansBookmark;
+}
+
 function copieLivreDansBookmark(leLivre) {
     var bookmark = document.getElementById("pochlistecontent");
     div=constructionCellule(1,leLivre);
@@ -117,16 +134,16 @@ function copieLivreDansBookmark(leLivre) {
 }
 
 function retireLivreDesFavoris(leLivre) {
-
+    sessionStorage.removeItem(leLivre.id);
+    //location.reload();
 }
 
 function enregistreLivreDansBookmark (leLivre) {
-sessionStorage.setItem('leLivre', JSON.stringify(leLivre));
-console.log ('envoi un string ds session storage');
-console.log(JSON.stringify(leLivre));
+    sessionStorage.setItem(leLivre.id, JSON.stringify(leLivre));
+}
 
-/*var obj = JSON.parse(sessionStorage.leLivre);
-console.log ('resupere un object javascript en le parsant');
-console.log(obj); */
-
+function chargementLivreDuBookmark() {
+    for(let key of Object.keys(sessionStorage)) {
+        copieLivreDansBookmark(JSON.parse(sessionStorage.getItem(key)));
+    }
 }
