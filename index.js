@@ -81,8 +81,9 @@ function constructionCellule(rechercheOuBookmark,leLivre) {
     span.addEventListener('click', function() {
         if (span.getAttribute('class')=='fa fa-bookmark fa-2x') {
             copieLivreDansBookmark(leLivre);
+            enregistreLivreDansBookmark(leLivre);
         } else {
-            supprimeLivreDesFavoris(leLivre);
+            retireLivreDesFavoris(leLivre);
         }
     });
     span.addEventListener('mouseover', function() {
@@ -114,7 +115,18 @@ function copieLivreDansBookmark(leLivre) {
     div=constructionCellule(1,leLivre);
     document.getElementById("pochlistecontent").appendChild(div);
 }
-function supprimeLivreDesFavoris(leLivre) {
+
+function retireLivreDesFavoris(leLivre) {
 
 }
 
+function enregistreLivreDansBookmark (leLivre) {
+sessionStorage.setItem('leLivre', JSON.stringify(leLivre));
+console.log ('envoi un string ds session storage');
+console.log(JSON.stringify(leLivre));
+
+/*var obj = JSON.parse(sessionStorage.leLivre);
+console.log ('resupere un object javascript en le parsant');
+console.log(obj); */
+
+}
