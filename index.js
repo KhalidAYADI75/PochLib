@@ -58,13 +58,12 @@ function effaceDonneesSaisies() {
 function affichageDesLivres(lesLivres) {
      var Container = document.getElementById("container");
      for (let i=0;i<lesLivres.length;i++) {
-        div=constructionCellule(0,lesLivres[i])
+        div=constructionCellule('recherche',lesLivres[i])
         document.getElementById("container").appendChild(div);
     }
 }
 
 function constructionCellule(rechercheOuBookmark,leLivre) {
-
     var divParent = document.createElement("div");
     divParent.style.height = "370px";
     divParent.style.border = "1px solid grey";
@@ -73,12 +72,18 @@ function constructionCellule(rechercheOuBookmark,leLivre) {
     creationComposant('div','Titre',divParent,leLivre.titre,'font-weight:bold;margin-top:20px;');
 
     var span = document.createElement("span");
-    if (rechercheOuBookmark==0) {
+    if (rechercheOuBookmark=='recherche') {
         span.setAttribute('class','fa fa-bookmark fa-2x');
     } else {
         span.setAttribute('class','fa fa-trash fa-2x');
     }
     span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green');
+    divParent.appendChild(span);
+
+    creationComposant('div','Id',divParent,leLivre.id,'font-style:italic;margin-top:20px;');
+    creationComposant('div','Auteur',divParent,leLivre.auteur,'margin-top:20px;');
+    creationComposant('div','Description',divParent,leLivre.description,'margin-top:20px;');
+    creationComposant('img','',divParent,leLivre.image,'margin-top:30px;width:80px');
 
     span.addEventListener('click', function() {
         let dejaDansBokkmark;
@@ -95,14 +100,7 @@ function constructionCellule(rechercheOuBookmark,leLivre) {
     span.addEventListener('mouseover', function() {
         span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green;cursor:pointer');
     });
-    divParent.appendChild(span);
-
-    creationComposant('div','Id',divParent,leLivre.id,'font-style:italic;margin-top:20px;');
-    creationComposant('div','Auteur',divParent,leLivre.auteur,'margin-top:20px;');
-    creationComposant('div','Description',divParent,leLivre.description,'margin-top:20px;');
-    creationComposant('img','',divParent,leLivre.image,'margin-top:30px;width:80px');
     return divParent;
-
 }
 
 function creationComposant(divOuImg,intitule,leParent,elementLivre,leStyle) {
@@ -129,7 +127,7 @@ function verifieSiLivreDansBookmark(leLivre) {
 
 function copieLivreDansBookmark(leLivre) {
     var bookmark = document.getElementById("pochlistecontent");
-    div=constructionCellule(1,leLivre);
+    div=constructionCellule('bookmark',leLivre);
     document.getElementById("pochlistecontent").appendChild(div);
 }
 
