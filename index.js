@@ -86,10 +86,10 @@ function constructionCellule(rechercheOuBookmark,leLivre) {
     creationComposant('img','',divParent,leLivre.image,'margin-top:30px;width:80px');
 
     span.addEventListener('click', function() {
-        let dejaDansBokkmark;
+        let dejaDansBookmark;
         if (span.getAttribute('class')=='fa fa-bookmark fa-2x') {
-            dejaDansBokkmark=verifieSiLivreDansBookmark(leLivre);
-            if (dejaDansBokkmark==false) {
+            dejaDansBookmark=verifieSiLivreDansBookmark(leLivre);
+            if (dejaDansBookmark==false) {
                  copieLivreDansBookmark(leLivre);
                  enregistreLivreDansBookmark(leLivre);
             }

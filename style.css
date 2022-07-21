@@ -1,30 +1,30 @@
 body {
-  background: white;
+    background: white;
 }
 .title{
- background: #F0F0F0;
- color:grey;
- border-bottom: 2px solid grey;
+     background: #F0F0F0;
+     color:grey;
+     border-bottom: 2px solid grey;
 }
 #myBooks {
-text-align: center;
+    text-align: center;
 }
 
 #resultSearch {
-border-top: 2px solid grey;
-text-align: center;
+    border-top: 2px solid grey;
+    text-align: center;
 }
 
 button {
-background-color:green;
-height:40px;
-width:120px;
-color:white;
-font-weight:bold;
+    background-color:green;
+    height:40px;
+    width:120px;
+    color:white;
+    font-weight:bold;
 }
 
 #bt_cancel {
-background-color:red;
+    background-color:red;
 }
 
 #divformsearch  {
@@ -33,7 +33,7 @@ text-align:left;
 
 input {
   box-sizing: border-box;
-   width: 100%;
+  width: 100%;
 }
 
 :root {
@@ -42,8 +42,12 @@ input {
 
 .grid {
     text-align:left;
-      display: grid;
-    /*  grid-template-columns: repeat(var(--columns-row), 1fr); */
-     grid-template-columns: 50% 50%;
-    /*  grid-template-rows: repeat(var(--columns-row), 1fr); */
-  }
+    display: grid;
+
+}
+@media (min-width: 700px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1300px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
