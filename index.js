@@ -4,7 +4,7 @@ const bouton_search=document.getElementById("bt_search");
 const form_search=document.getElementById("divformsearch");
 form_search.style.display='none';
 //sessionStorage.clear();
-chargementLivreDuBookmark();
+chargementLivresDuBookmark();
 
 // Déclencheur clique sur le bouton ajouter un livre
 bouton_addbook.addEventListener('click',function() {
@@ -132,16 +132,22 @@ function copieLivreDansBookmark(leLivre) {
 }
 
 function retireLivreDesFavoris(leLivre) {
-    sessionStorage.removeItem(leLivre.id);
-    //location.reload();
+   sessionStorage.removeItem(leLivre.id);
 }
 
 function enregistreLivreDansBookmark (leLivre) {
     sessionStorage.setItem(leLivre.id, JSON.stringify(leLivre));
 }
 
-function chargementLivreDuBookmark() {
+function chargementLivresDuBookmark() {
     for(let key of Object.keys(sessionStorage)) {
         copieLivreDansBookmark(JSON.parse(sessionStorage.getItem(key)));
     }
+}
+ function recupTousLesLivres(tousLesLivres) {
+    let tabLivres = [];
+    for (let i=0;i<tousLesLivres.length;i++) {
+        tabLivres.push(new Livre(tousLesLivres[i]));
+    }
+    return tabLivres;
 }
