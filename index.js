@@ -1,13 +1,13 @@
 //Initialisation
-const bouton_addbook=document.getElementById("bt_add");
-const bouton_search=document.getElementById("bt_search");
+const button_addbook=document.getElementById("bt_add");
+const button_search=document.getElementById("bt_search");
 const form_search=document.getElementById("divformsearch");
 form_search.style.display='none';
 //sessionStorage.clear();
-chargementLivresDuBookmark();
+loadingBooksFromBookmark();
 
-// Déclencheur clique sur le bouton ajouter un livre
-bouton_addbook.addEventListener('click',function() {
+// Déclencheur clique sur le bouton ajouter un book
+button_addbook.addEventListener('click',function() {
     if (form_search.style.display=='none') {
       form_search.style.display=""; }
     else {
@@ -16,22 +16,22 @@ bouton_addbook.addEventListener('click',function() {
 });
 
 // Déclencheur clique sur le bouton rechercher
-bouton_search.addEventListener('click',function(event) {
+button_search.addEventListener('click',function(event) {
     event.preventDefault();
-    if ((document.getElementById("titre_livre").value == "") || (document.getElementById("auteur").value == "")) {
-        alert ("Vous devez saisir le titre et l'auteur du livre");
+    if ((document.getElementById("title_book").value == "") || (document.getElementById("author").value == "")) {
+        alert ("Vous devez saisir le titre et l'author du book");
     } else {
-        const tlivre=document.getElementById("titre_livre").value;
-        const auteur=document.getElementById("auteur").value;
-        fetch("https://www.googleapis.com/books/v1/volumes?q="+tlivre+"inauthor:"+auteur+"&key=AIzaSyB9_kmuvdfj1aK_QY8c3JwHzDAYcsWd0HU")
+        const tbook=document.getElementById("title_book").value;
+        const author=document.getElementById("author").value;
+        fetch("https://www.googleapis.com/books/v1/volumes?q="+tbook+"inauthor:"+author+"&key=AIzaSyB9_kmuvdfj1aK_QY8c3JwHzDAYcsWd0HU")
         .then(function(res) {
         if (res.ok) {
         return (res.json());
         }
         })
-        .then(function(resultatRechercheLivres) {
-        afficheResultatDansTableau(resultatRechercheLivres);
-        effaceDonneesSaisies();
+        .then(function(bookSearchResults) {
+        showResults(bookSearchResults);
+        deleteEnteredData();
         })
         .catch (function(err) {
         alert ("Erreur de traitement");
@@ -39,37 +39,38 @@ bouton_search.addEventListener('click',function(event) {
     }
 });
 
-function afficheResultatDansTableau(resultatRechercheLivres) {
-    let lesLivres = [];
-    lesLivres = recupTousLesLivres(resultatRechercheLivres.items);
+function showResults(bookSearchResults) {
+    let books = [];
+    books = getAllBooks(bookSearchResults.items);
     document.getElementById("container").innerHTML="";
-    if (lesLivres.length==0) {
-      document.getElementById("container").innerHTML="</br>Aucun livre n'a été trouvé</br></br></br>";
+    if (books.length==0) {
+      document.getElementById("container").innerHTML="</br>Aucun book n'a été trouvé</br></br></br>";
     } else {
-       affichageDesLivres(lesLivres);
+       showAllBooks(books);
     }
 }
 
-function effaceDonneesSaisies() {
-    document.getElementById("titre_livre").value="";
-    document.getElementById("auteur").value="";
+function deleteEnteredData() {
+    document.getElementById("title_book").value="";
+    document.getElementById("author").value="";
 }
 
-function affichageDesLivres(lesLivres) {
+function showAllBooks(books) {
      var Container = document.getElementById("container");
-     for (let i=0;i<lesLivres.length;i++) {
-        div=constructionCellule('recherche',lesLivres[i])
+     for (let i=0;i<books.length;i++) {
+        div=cellConstruction('recherche',books[i])
         document.getElementById("container").appendChild(div);
     }
 }
 
-function constructionCellule(rechercheOuBookmark,leLivre) {
-    var divParent = document.createElement("div");
+function cellConstruction(searchOrBookmark,book) {
+
+ /*   var divParent = document.createElement("div");
     divParent.style.height = "370px";
     divParent.style.border = "1px solid grey";
     divParent.style.padding = "20px";
 
-    creationComposant('div','Titre',divParent,leLivre.titre,'font-weight:bold;margin-top:20px;');
+    creationComposant('div','Titre',divParent,lebook.titre,'font-weight:bold;margin-top:20px;');
 
     var span = document.createElement("span");
     if (rechercheOuBookmark=='recherche') {
@@ -80,74 +81,63 @@ function constructionCellule(rechercheOuBookmark,leLivre) {
     span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green');
     divParent.appendChild(span);
 
-    creationComposant('div','Id',divParent,leLivre.id,'font-style:italic;margin-top:20px;');
-    creationComposant('div','Auteur',divParent,leLivre.auteur,'margin-top:20px;');
-    creationComposant('div','Description',divParent,leLivre.description,'margin-top:20px;');
-    creationComposant('img','',divParent,leLivre.image,'margin-top:30px;width:80px');
+    creationComposant('div','Id',divParent,lebook.id,'font-style:italic;margin-top:20px;');
+    creationComposant('div','author',divParent,lebook.author,'margin-top:20px;');
+    creationComposant('div','Description',divParent,lebook.description,'margin-top:20px;');
+    creationComposant('img','',divParent,lebook.image,'margin-top:30px;width:80px');
 
     span.addEventListener('click', function() {
         let dejaDansBookmark;
         if (span.getAttribute('class')=='fa fa-bookmark fa-2x') {
-            dejaDansBookmark=verifieSiLivreDansBookmark(leLivre);
+            dejaDansBookmark=checkIfBookIsInBookmark(lebook);
             if (dejaDansBookmark==false) {
-                 copieLivreDansBookmark(leLivre);
-                 enregistreLivreDansBookmark(leLivre);
+                 copyInBookmark(lebook);
+                 saveInBookmark(lebook);
             }
         } else {
-            retireLivreDesFavoris(leLivre);
+            removeFromBookmark(lebook);
         }
     });
     span.addEventListener('mouseover', function() {
         span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green;cursor:pointer');
     });
-    return divParent;
+    return divParent; */
 }
 
-function creationComposant(divOuImg,intitule,leParent,elementLivre,leStyle) {
-    var creationDiv = document.createElement(divOuImg);
-    if (divOuImg=='img') {
-        creationDiv.src=elementLivre;
-    } else {
-        creationDiv.textContent = "Titre : "+elementLivre;
-    }
-    creationDiv.setAttribute('style',leStyle);
-    leParent.appendChild(creationDiv);
-}
-
-function verifieSiLivreDansBookmark(leLivre) {
-    let dejaDansBookmark=false;
+function checkIfBookIsInBookmark(book) {
+    let alreadyInBookmark=false;
     for(let key of Object.keys(sessionStorage)) {
-        if (leLivre.id==key) {
-            alert ('Vous ne pouvez ajouter deux fois le même livre');
-            dejaDansBookmark=true;
+        if (book.id==key) {
+            alert ('Vous ne pouvez ajouter deux fois le même book');
+            alreadyInBookmark=true;
         }
     }
-    return dejaDansBookmark;
+    return alreadyInBookmark;
 }
 
-function copieLivreDansBookmark(leLivre) {
+function copyInBookmark(book) {
     var bookmark = document.getElementById("pochlistecontent");
-    div=constructionCellule('bookmark',leLivre);
+    div=cellConstruction('bookmark',book);
     document.getElementById("pochlistecontent").appendChild(div);
 }
 
-function retireLivreDesFavoris(leLivre) {
-   sessionStorage.removeItem(leLivre.id);
+function removeFromBookmark(book) {
+   sessionStorage.removeItem(lebook.id);
 }
 
-function enregistreLivreDansBookmark (leLivre) {
-    sessionStorage.setItem(leLivre.id, JSON.stringify(leLivre));
+function saveInBookmark (book) {
+    sessionStorage.setItem(lebook.id, JSON.stringify(book));
 }
 
-function chargementLivresDuBookmark() {
+function loadingBooksFromBookmark() {
     for(let key of Object.keys(sessionStorage)) {
-        copieLivreDansBookmark(JSON.parse(sessionStorage.getItem(key)));
+        copyInBookmark(JSON.parse(sessionStorage.getItem(key)));
     }
 }
- function recupTousLesLivres(tousLesLivres) {
-    let tabLivres = [];
-    for (let i=0;i<tousLesLivres.length;i++) {
-        tabLivres.push(new Livre(tousLesLivres[i]));
+ function getAllBooks(allBooks) {
+    let arrayOfBooks = [];
+    for (let i=0;i<AllBooks.length;i++) {
+        arrayOfBooks.push(new book(allBooks[i]));
     }
-    return tabLivres;
+    return arrayOfBooks;
 }

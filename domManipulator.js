@@ -1,14 +1,16 @@
 class domManipulator {
 
-function createBookElement(parent,livre) {
-    parent.appendChild(creationComposant('div','Titre',livre.titre));
+function createBookElement(parent,book) {
+    parent.appendChild(componentCreation('div','Titre',book.titre));
+    parent.appendChild(componentCreation('div','Id',book.id));
+    parent.appendChild(componentCreation('div','Description',book.description));
 }
-function creationComposant(divOuImg,intitule,elementLivre) {
-    var creationDiv = document.createElement(divOuImg);
-    if (divOuImg=='img') {
-        creationDiv.src=elementLivre;
+function componentCreation(divOrImg,entitled,elementbook) {
+    var creationDiv = document.createElement(divOrImg);
+    if (divOrImg=='img') {
+        creationDiv.src=elementbook;
     } else {
-        creationDiv.textContent = "Titre : "+elementLivre;
+        creationDiv.textContent = entitled +" : "+elementbook;
     }
     return creationDiv;
 }
