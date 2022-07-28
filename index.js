@@ -68,7 +68,10 @@ function cellConstruction(searchOrBookmark,book) {
     divParent.style.height = "370px";
     divParent.style.border = "1px solid grey";
     divParent.style.padding = "20px";
+    var span=domManipulator.iconCreation(divParent,'search');
     domManipulator.createBookElement(divParent,book);
+    span.addEventListener('click', function() { clickOnIcon(span,book); });
+
     return divParent;
 
  /*   var divParent = document.createElement("div");
@@ -128,11 +131,11 @@ function copyInBookmark(book) {
 }
 
 function removeFromBookmark(book) {
-   sessionStorage.removeItem(lebook.id);
+   sessionStorage.removeItem(book.id);
 }
 
 function saveInBookmark (book) {
-    sessionStorage.setItem(lebook.id, JSON.stringify(book));
+    sessionStorage.setItem(book.id, JSON.stringify(book));
 }
 
 function loadingBooksFromBookmark() {
@@ -146,4 +149,17 @@ function loadingBooksFromBookmark() {
         arrayOfBooks.push(new book(allBooks[i]));
     }
     return arrayOfBooks;
+}
+
+function clickOnIcon(span,book) {
+    let dejaDansBookmark;
+    if (span.getAttribute('class')=='fa fa-bookmark fa-2x') {
+        dejaDansBookmark=checkIfBookIsInBookmark(book);
+        if (dejaDansBookmark==false) {
+            copyInBookmark(book);
+            saveInBookmark(book);
+        }
+    } else {
+        removeFromBookmark(book);
+    }
 }

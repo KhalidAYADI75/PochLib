@@ -8,14 +8,26 @@ class domManipulator {
     }
 
     static componentCreation(typeOfTag,entitled,elementbook) {
-        var creationDiv = document.createElement(typeOfTag);
+        var creationTag = document.createElement(typeOfTag);
         if (typeOfTag=='img') {
-            creationDiv.src=elementbook;
-            creationDiv.setAttribute('class','image');
+            creationTag.src=elementbook;
+            creationTag.setAttribute('class','image');
         } else {
-            creationDiv.textContent = entitled+" : "+elementbook;
-            creationDiv.setAttribute('class',entitled);
+            creationTag.textContent = entitled+" : "+elementbook;
+            creationTag.setAttribute('class',entitled);
         }
-        return creationDiv;
+        return creationTag;
+    }
+
+    static iconCreation(parent,searchOrBookmark) {
+        var span = document.createElement('span');
+        if (searchOrBookmark=='search') {
+            span.setAttribute('class','fa fa-bookmark fa-2x');
+        } else {
+            span.setAttribute('class','fa fa-trash fa-2x');
+        }
+        span.setAttribute('style','float:right;font-weight:bold;position:relative;color:green');
+        parent.appendChild(span);
+        return span;
     }
 }
