@@ -68,56 +68,25 @@ function cellConstruction(searchOrBookmark,book) {
     divParent.style.height = "370px";
     divParent.style.border = "1px solid grey";
     divParent.style.padding = "20px";
-    var span=domManipulator.iconCreation(divParent,'search');
+    if (searchOrBookmark=='search') {
+        var span=domManipulator.iconCreation(divParent,'search');
+    } else {
+        var span=domManipulator.iconCreation(divParent,'bookmark');
+    }
     domManipulator.createBookElement(divParent,book);
     span.addEventListener('click', function() { clickOnIcon(span,book); });
-
+    span.addEventListener('mouseover', function() {
+            span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green;cursor:pointer');
+        });
     return divParent;
 
- /*   var divParent = document.createElement("div");
-    divParent.style.height = "370px";
-    divParent.style.border = "1px solid grey";
-    divParent.style.padding = "20px";
-
-    creationComposant('div','Titre',divParent,lebook.titre,'font-weight:bold;margin-top:20px;');
-
-    var span = document.createElement("span");
-    if (rechercheOuBookmark=='recherche') {
-        span.setAttribute('class','fa fa-bookmark fa-2x');
-    } else {
-        span.setAttribute('class','fa fa-trash fa-2x');
-    }
-    span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green');
-    divParent.appendChild(span);
-
-    creationComposant('div','Id',divParent,lebook.id,'font-style:italic;margin-top:20px;');
-    creationComposant('div','author',divParent,lebook.author,'margin-top:20px;');
-    creationComposant('div','Description',divParent,lebook.description,'margin-top:20px;');
-    creationComposant('img','',divParent,lebook.image,'margin-top:30px;width:80px');
-
-    span.addEventListener('click', function() {
-        let dejaDansBookmark;
-        if (span.getAttribute('class')=='fa fa-bookmark fa-2x') {
-            dejaDansBookmark=checkIfBookIsInBookmark(lebook);
-            if (dejaDansBookmark==false) {
-                 copyInBookmark(lebook);
-                 saveInBookmark(lebook);
-            }
-        } else {
-            removeFromBookmark(lebook);
-        }
-    });
-    span.addEventListener('mouseover', function() {
-        span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green;cursor:pointer');
-    });
-    return divParent; */
 }
 
 function checkIfBookIsInBookmark(book) {
     let alreadyInBookmark=false;
     for(let key of Object.keys(sessionStorage)) {
         if (book.id==key) {
-            alert ('Vous ne pouvez ajouter deux fois le même book');
+            alert ('Vous ne pouvez ajouter deux fois le même livre');
             alreadyInBookmark=true;
         }
     }
