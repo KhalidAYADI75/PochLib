@@ -58,12 +58,18 @@ function deleteEnteredData() {
 function showAllBooks(books) {
      var Container = document.getElementById("container");
      for (let i=0;i<books.length;i++) {
-        div=cellConstruction('recherche',books[i])
+        div=cellConstruction('search',books[i])
         document.getElementById("container").appendChild(div);
     }
 }
 
 function cellConstruction(searchOrBookmark,book) {
+    var divParent = document.createElement("div");
+    divParent.style.height = "370px";
+    divParent.style.border = "1px solid grey";
+    divParent.style.padding = "20px";
+    domManipulator.createBookElement(divParent,book);
+    return divParent;
 
  /*   var divParent = document.createElement("div");
     divParent.style.height = "370px";
@@ -136,7 +142,7 @@ function loadingBooksFromBookmark() {
 }
  function getAllBooks(allBooks) {
     let arrayOfBooks = [];
-    for (let i=0;i<AllBooks.length;i++) {
+    for (let i=0;i<allBooks.length;i++) {
         arrayOfBooks.push(new book(allBooks[i]));
     }
     return arrayOfBooks;
