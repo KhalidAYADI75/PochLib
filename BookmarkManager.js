@@ -13,7 +13,7 @@ class BookmarkManager {
 
     static copyInBookmark(book) {
         var bookmark = document.getElementById("pochlistecontent");
-        div=cellConstruction('bookmark',book);
+        var div=DomManipulator.cellConstruction('bookmark',book);
         document.getElementById("pochlistecontent").appendChild(div);
     }
 
@@ -28,6 +28,18 @@ class BookmarkManager {
     static loadingBooksFromBookmark() {
         for(let key of Object.keys(sessionStorage)) {
             this.copyInBookmark(JSON.parse(sessionStorage.getItem(key)));
+        }
+    }
+    static clickOnIcon(span,book) {
+        let dejaDansBookmark;
+        if (span.getAttribute('class')=='fa fa-bookmark fa-2x') {
+            dejaDansBookmark=this.checkIfBookIsInBookmark(book);
+            if (dejaDansBookmark==false) {
+                this.copyInBookmark(book);
+                this.saveInBookmark(book);
+            }
+        } else {
+            this.removeFromBookmark(book);
         }
     }
 }

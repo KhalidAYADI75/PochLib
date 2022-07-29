@@ -1,8 +1,26 @@
 class DomManipulator {
 
+    static cellConstruction(searchOrBookmark,book) {
+        var divParent = document.createElement("div");
+        divParent.style.height = "370px";
+        divParent.style.border = "1px solid grey";
+        divParent.style.padding = "20px";
+        if (searchOrBookmark=='search') {
+            var span=this.iconCreation(divParent,'search');
+        } else {
+            var span=this.iconCreation(divParent,'bookmark');
+        }
+        this.createBookElement(divParent,book);
+        span.addEventListener('click', function() {
+            BookmarkManager.clickOnIcon(span,book);
+        });
+        return divParent;
+    }
+
     static createBookElement(parent,book) {
         parent.appendChild(this.componentCreation('h3','Titre',book.title));
         parent.appendChild(this.componentCreation('i','Id',book.id));
+        parent.appendChild(this.componentCreation('p','Auteur',book.author));
         parent.appendChild(this.componentCreation('p','Description',book.description));
         parent.appendChild(this.componentCreation('img','',book.image));
     }
@@ -26,7 +44,6 @@ class DomManipulator {
         } else {
             span.setAttribute('class','fa fa-trash fa-2x');
         }
-        span.setAttribute('style','float:right;color:green');
         parent.appendChild(span);
         return span;
     }
