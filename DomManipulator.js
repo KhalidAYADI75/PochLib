@@ -1,4 +1,4 @@
-class domManipulator {
+class DomManipulator {
 
     static createBookElement(parent,book) {
         parent.appendChild(this.componentCreation('h3','Titre',book.title));
@@ -26,7 +26,7 @@ class domManipulator {
         } else {
             span.setAttribute('class','fa fa-trash fa-2x');
         }
-        span.setAttribute('style','float:right;font-weight:bold;position:relative;color:green');
+        span.setAttribute('style','float:right;color:green');
         parent.appendChild(span);
         return span;
     }

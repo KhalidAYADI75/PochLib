@@ -4,7 +4,7 @@ const button_search=document.getElementById("bt_search");
 const form_search=document.getElementById("divformsearch");
 form_search.style.display='none';
 //sessionStorage.clear();
-loadingBooksFromBookmark();
+BookmarkManager.loadingBooksFromBookmark();
 
 // Déclencheur clique sur le bouton ajouter un book
 button_addbook.addEventListener('click',function() {
@@ -69,49 +69,23 @@ function cellConstruction(searchOrBookmark,book) {
     divParent.style.border = "1px solid grey";
     divParent.style.padding = "20px";
     if (searchOrBookmark=='search') {
-        var span=domManipulator.iconCreation(divParent,'search');
+        var span=DomManipulator.iconCreation(divParent,'search');
     } else {
-        var span=domManipulator.iconCreation(divParent,'bookmark');
+        var span=DomManipulator.iconCreation(divParent,'bookmark');
     }
-    domManipulator.createBookElement(divParent,book);
-    span.addEventListener('click', function() { clickOnIcon(span,book); });
+    DomManipulator.createBookElement(divParent,book);
+    span.addEventListener('click', function() {
+        clickOnIcon(span,book);
+    });
+
     span.addEventListener('mouseover', function() {
-            span.setAttribute('style','float:right;font-weight:bold;position:relative;top:-20px;color:green;cursor:pointer');
+            span.setAttribute('style','float:right;color:green;cursor:pointer');
         });
     return divParent;
 
 }
 
-function checkIfBookIsInBookmark(book) {
-    let alreadyInBookmark=false;
-    for(let key of Object.keys(sessionStorage)) {
-        if (book.id==key) {
-            alert ('Vous ne pouvez ajouter deux fois le même livre');
-            alreadyInBookmark=true;
-        }
-    }
-    return alreadyInBookmark;
-}
 
-function copyInBookmark(book) {
-    var bookmark = document.getElementById("pochlistecontent");
-    div=cellConstruction('bookmark',book);
-    document.getElementById("pochlistecontent").appendChild(div);
-}
-
-function removeFromBookmark(book) {
-   sessionStorage.removeItem(book.id);
-}
-
-function saveInBookmark (book) {
-    sessionStorage.setItem(book.id, JSON.stringify(book));
-}
-
-function loadingBooksFromBookmark() {
-    for(let key of Object.keys(sessionStorage)) {
-        copyInBookmark(JSON.parse(sessionStorage.getItem(key)));
-    }
-}
  function getAllBooks(allBooks) {
     let arrayOfBooks = [];
     for (let i=0;i<allBooks.length;i++) {
@@ -123,12 +97,12 @@ function loadingBooksFromBookmark() {
 function clickOnIcon(span,book) {
     let dejaDansBookmark;
     if (span.getAttribute('class')=='fa fa-bookmark fa-2x') {
-        dejaDansBookmark=checkIfBookIsInBookmark(book);
+        dejaDansBookmark=BookmarkManager.checkIfBookIsInBookmark(book);
         if (dejaDansBookmark==false) {
-            copyInBookmark(book);
-            saveInBookmark(book);
+            BookmarkManager.copyInBookmark(book);
+            BookmarkManager.saveInBookmark(book);
         }
     } else {
-        removeFromBookmark(book);
+        BookmarkManager.removeFromBookmark(book);
     }
 }
